@@ -1,11 +1,20 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
-
-import App from './App'
+import { render } from 'react-dom'
+import { Router } from 'react-router'
+import { Provider } from 'react-redux'
 import 'normalize.css'
+
+import routes from './routes'
+import makeStore from './makeStore'
 
 window.onload = function() {
   console.log('app')
 
-  ReactDOM.render(<App />, document.querySelector('#app'))
+  render(
+    <Provider store={makeStore({})}>
+      <Router>
+        {routes}
+      </Router>
+    </Provider>,
+    document.querySelector('#app'))
 }
