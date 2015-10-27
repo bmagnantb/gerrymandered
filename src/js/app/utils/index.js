@@ -1,0 +1,1 @@
+export reduxPromiseMW from './reduxPromiseMW'

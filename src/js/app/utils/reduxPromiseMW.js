@@ -9,6 +9,7 @@ export default ({dispatch}) => next => action => {
       payload: null,
       meta: {
         sequence: {
+          id,
           type: 'begin'
         }
       }
@@ -18,8 +19,10 @@ export default ({dispatch}) => next => action => {
       ...action,
       payload: result,
       meta: {
-        id,
-        type: 'end'
+        sequence: {
+          id,
+          type: 'end'
+        }
       }
     }), error => dispatch({
       ...action,

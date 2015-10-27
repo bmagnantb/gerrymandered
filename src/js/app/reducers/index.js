@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux'
 
-var reducers = {
-  home: (state={}, action) => state
-}
+import svgMap from './svgMap'
 
-export default combineReducers(reducers)
+export default combineReducers({
+  svgMap
+})

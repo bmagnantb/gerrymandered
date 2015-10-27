@@ -6,10 +6,9 @@ const buildOpenStatesUrl = string => `http://openstates.org/api/v1/${string}/?${
 var router = express.Router()
 
 router.get('/metadata', (req, res) => {
-  console.log(buildOpenStatesUrl(`/metadata`))
   axios.get(buildOpenStatesUrl(`/metadata`))
-    .then({data} => res.send(data))
-    .catch({status, statusText} => console.log(status, statusText))
+    .then(({data}) => res.send(data))
+    .catch(({status, statusText}) => console.log(status, statusText))
 })
 
 export default router

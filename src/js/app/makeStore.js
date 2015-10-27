@@ -1,7 +1,7 @@
 import { applyMiddleware, createStore } from 'redux'
 import createLogger from 'redux-logger'
 
-import reduxPromiseMW from './utils/reduxPromiseMW'
+import { reduxPromiseMW } from './utils'
 import reducer from './reducers'
 
 export default function makeStore(initialState) {

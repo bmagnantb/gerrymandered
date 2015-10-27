@@ -1,21 +1,34 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
+import Immutable from 'immutable'
+import PureComponent from 'react-pure-render/component'
 
 import { getMetadata } from '../actions/creators'
+import { SVGMap, State } from '../components'
 
 import './Home.scss'
-export class Home extends Component {
+export class Home extends PureComponent {
   componentWillMount() {
     this.props.dispatch(getMetadata())
   }
 
   render() {
+    console.log('home props', this.props)
     return <div>
-      <h2>Home</h2>
+      <SVGMap>
+          {this.props.features.map(
+            feature => <State key={`state-${feature.getIn(['properties', 'NAME'])}`}
+                              pathCoords={feature.get('geometry')}
+                              id={feature.getIn(['properties', 'STATE'])}
+                              dispatch={this.props.dispatch}
+                              highlight={this.props.highlight === feature.getIn(['properties', 'STATE'])} />)}
+      </SVGMap>
     </div>
   }
 }
 
-const select = state => state
+const select = state => {
+  return { features: state.svgMap.getIn(['stateShapes', 'features']), highlight: state.svgMap.get('highlight') }
+}
 
 export default connect(select)(Home)
