@@ -12,7 +12,7 @@ export default class SVGMap extends PureComponent {
     // console.log(pr, d3.geo.path()(pr))
 
     return <div>
-      <svg style={{overflow: 'visible', position: 'relative'}}>
+      <svg viewBox={this.props.viewBox.join(', ')}>
         {this.props.children}
       </svg>
     </div>
