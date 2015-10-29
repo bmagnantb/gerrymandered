@@ -3,5 +3,5 @@ import State from './State'
 
 export default {
   SVGMap,
-  State
+  State,
 }
