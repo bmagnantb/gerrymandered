@@ -1,7 +1,7 @@
 import React from 'react'
 import d3 from 'd3'
 import PureComponent from 'react-pure-render/component'
-
+import StateSvg from './StateSvg'
 import { highlightStateBorder } from '../actions/creators'
 
 import './State.scss'
@@ -34,10 +34,39 @@ export default class State extends PureComponent {
     };
   }
 
+  getFeature(pathCoords){
+    if(this.pathCoords !== pathCoords){
+      this.pathCoords = pathCoords;
+      this.feature = pathCoords.toJS();
+    }
+    return this.feature;
+  }
+
+  getCentroid(){
+    if(!this.centroid){
+      this.centroid = d3.geo.path().centroid(this.feature);
+    }
+    return this.centroid;
+  }
+
+  getPath(){
+    if(!this.path){
+      this.path = d3.geo.path()(this.feature);
+    }
+    return this.path;
+  }
+
+  getBounds(){
+    if(!this.bounds){
+      this.bounds = d3.geo.path().bounds(this.feature);
+    }
+    return this.bounds;
+  }
+
   render() {
     const { dispatch, id, highlight, pathCoords } = this.props;
-    const feature = pathCoords.toJS();
-    const centroid = d3.geo.path().centroid(feature);
+    const feature = this.getFeature(pathCoords);
+    const centroid = this.getCentroid(feature);
     const containerStyle = {
       position:'absolute',
       overflow:'visible',
@@ -58,7 +87,7 @@ export default class State extends PureComponent {
       transform: highlight ? 'scale(1.3,1.3) translateY(-5px)' : 'scale(1,1) translateY(0)',
       ...transformOrigin
     };
-    const d = d3.geo.path()(feature);
+    const d = this.getPath(feature);
     const path = `<path filter=${highlight ? 'url(#f3)' : 'url()'}
           stroke="black"
           strokeWidth="1"
@@ -72,7 +101,7 @@ export default class State extends PureComponent {
       <feGaussianBlur result="blurOut" in="matrixOut" stdDeviation="10" />
       <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
     </filter>`
-    const bounds = d3.geo.path().bounds(feature);
+    const bounds = this.getBounds(feature);
     const transformRotation = this.getTransformRotation(this.state.mousePos, bounds);
     const transformStyle = {
       ...transformOrigin,
@@ -80,21 +109,18 @@ export default class State extends PureComponent {
     }
     return <div style={containerStyle}>
       <div style={transformStyle}>
-        <svg width="1" height="1" style={svgStyle}>
-          <defs dangerouslySetInnerHTML={{__html: filter}}>
-          </defs>
-          <g onMouseEnter={() => dispatch(highlightStateBorder(id))} dangerouslySetInnerHTML={{__html: path}}
-             onMouseMove={e => {
-               if(highlight){
-                 this.setState({mousePos:{
-                   x:e.clientX,
-                   y:e.clientY
-                 }});
-               }
-             }}>
-          </g>
-
-        </svg>
+        <StateSvg mouseEnterHandler={() => dispatch(highlightStateBorder(id))}
+                  mouseMoveHandler={e => {
+                    if(highlight){
+                      this.setState({mousePos:{
+                        x:e.clientX,
+                        y:e.clientY
+                      }});
+                    }
+                  }}
+                  svgStyle={svgStyle}
+                  path={path}
+                  filter={filter}/>
       </div>
     </div>;
   }
