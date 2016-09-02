@@ -1,5 +1,6 @@
 import React from 'react'
 import PureComponent from 'react-pure-render/component'
+import d3 from 'd3'
 
 import { highlightStateBorder } from '../actions/creators'
 
@@ -10,11 +11,13 @@ export default class State extends PureComponent {
   }
 
   render() {
-    const { dispatch, id, stroke, pathCoords, pathGen } = this.props
-    return <path onMouseEnter={() => dispatch(highlightStateBorder(id))}
-                 stroke="black"
-                 strokeWidth={stroke}
-                 fill="white"
+    const { dispatch, id, stroke, strokeWidth, fill, pathCoords, pathGen } = this.props
+
+    return <path className="state-path"
+                 onMouseEnter={() => dispatch(highlightStateBorder(id))}
+                 stroke={stroke}
+                 strokeWidth={strokeWidth}
+                 fill={fill}
                  d={pathGen(pathCoords.toJS())} />
   }
 }

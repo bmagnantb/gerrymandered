@@ -60,7 +60,7 @@ export class Home extends PureComponent {
       <SVGMap viewBox={viewBox}>
         {loading
           ? <Modal isOpen={true} style={modalStyles}>
-              <span className="fa fa-spinner fa-pulse fa-5x" />
+              <span className="fa fa-circle-o-notch fa-spin fa-5x" />
             </Modal> : null}
         {features.map(
           feature => <State key={`state-${feature.getIn(['properties', 'NAME'])}`}
@@ -68,7 +68,10 @@ export class Home extends PureComponent {
                             pathGen={d3Path}
                             id={feature.getIn(['properties', 'STATE'])}
                             dispatch={this.handlers.debounceAction$}
-                            stroke={feature.getIn(['properties', 'STATE']) === highlight ? 3 : 1} />)}
+                            stroke={feature.getIn(['properties', 'STATE']) === highlight ? '#000' : '#333'}
+                            strokeWidth={feature.getIn(['properties', 'STATE']) === highlight ? 2 : .5}
+                            fill={'#fff'}
+                        />)}
       </SVGMap>
     </div>
   }
