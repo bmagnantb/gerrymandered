@@ -3,7 +3,7 @@ import axios from 'axios'
 
 var apiKey = process.env.OPEN_STATES_KEY || require('config').get('openStatesApiKey')
 
-const buildOpenStatesUrl = string => `http://openstates.org/api/v1/${string}/?${apiKey}`
+const buildOpenStatesUrl = string => `http://openstates.org/api/v1/${string}/?apikey=${apiKey}`
 var router = express.Router()
 
 router.get('/metadata', (req, res) => {
