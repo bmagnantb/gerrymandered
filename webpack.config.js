@@ -30,7 +30,7 @@ module.exports = {
       {
         test: /\.jsx?$/,
         exclude: [/node_modules/],
-        loader: 'babel'
+        loader: 'react-hot!babel'
       },
       {
         test: /\.s?css$/,
@@ -45,8 +45,7 @@ module.exports = {
   },
   plugins: isDev
     ? [
-      new webpack.HotModuleReplacementPlugin(),
-      new webpack.NoErrorsPlugin()
+      new webpack.HotModuleReplacementPlugin()
     ]
     : [
       new ExtractTextPlugin('style.css')
